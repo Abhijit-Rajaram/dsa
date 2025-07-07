@@ -1,33 +1,32 @@
 from typing import List
 
-def brute_force(array: List[int]):
-    max_profit: int = 0
+def brute_force(array: List[int], target: int) -> List[int]:
+    """Brute Force O(n^2)"""
+    if len(array) < 2:
+        return [-1, -1]
+    
     for i in range(len(array)):
-        for j in range(i+1,len(array)):
-            if array[j] - array[i] > max_profit:
-                max_profit = array[j] - array[i]
-    return max_profit
+        for j in range(i + 1, len(array)):
+            if array[i] + array[j] == target:
+                return [i, j]
+    return [-1, -1]
 
-def optimized(array: List[int]):
-    max_value = min_value = array[0]
-    pointer: int = 1
-
-    max_profit: int = 0
-
-    while pointer < len(array):
-        if max_value < array[pointer]:
-            max_value = array[pointer]
-            max_profit = max(max_profit, max_value - min_value)
-        if min_value > array[pointer]:
-            min_value = max_value = array[pointer]
-        pointer += 1
-    return max_profit
+def optimized(array: List[int], target: int) -> List[int]:
+    ...
+    my_dict = {}
+    for i in range(len(array)):
+        current = target - array[i]
+        if current in my_dict:
+            return [my_dict[current], i]
+        my_dict[array[i]] = i
+    return [-1,-1]
 
 if __name__ == "__main__":
-    given_array: List[int] = [7,1,5,3,6,4,15]
+    given_array: List[int] = [2,7,11,15]
+    target: int = 22
 
     array_one: List[int] = given_array.copy()
-    print(brute_force(array=array_one))
+    print(brute_force(array=array_one, target= target))
 
     array_two: List[int] = given_array.copy()
-    print(optimized(array=array_two))
+    print(optimized(array=array_two, target= target))
